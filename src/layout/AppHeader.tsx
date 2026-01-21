@@ -1,11 +1,14 @@
 "use client";
 import { ThemeToggleButton } from "@/components/common/ThemeToggleButton";
-import NotificationDropdown from "@/components/header/NotificationDropdown";
-import UserDropdown from "@/components/header/UserDropdown";
+import { createDynamicDropdown } from "@/hooks/useDynamicComponent";
 import { useSidebar } from "@/context/SidebarContext";
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 import React, { useState, useEffect, useRef } from "react";
+
+// Import dynamique des dropdowns lourds (329 & 191 lignes, API calls)
+const NotificationDropdown = createDynamicDropdown(() => import("@/components/header/NotificationDropdown"));
+const UserDropdown = createDynamicDropdown(() => import("@/components/header/UserDropdown"));
 
 const AppHeader: React.FC = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);

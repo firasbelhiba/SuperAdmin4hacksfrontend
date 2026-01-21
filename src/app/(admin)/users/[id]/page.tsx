@@ -4,12 +4,15 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Shield, Ban, CheckCircle2, Mail, Calendar, User as UserIcon } from "lucide-react";
 import useAuthGuard from "@/hooks/useAuthGuard";
+import { createDynamicModal } from "@/hooks/useDynamicComponent";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import Button from "@/components/ui/button/Button";
-import ConfirmModal from "@/components/ui/ConfirmModal";
 import { User, banUser, unbanUser } from "@/services/users";
 import { useSelectedUser } from "@/context/SelectedUserContext";
 import { useAlert } from "@/context/AlertProvider";
+
+// Import dynamique du modal pour éviter de charger Portal/animations avant l'interaction
+const ConfirmModal = createDynamicModal(() => import("@/components/ui/ConfirmModal"));
 
 interface PageProps {
   params: Promise<{ id: string }>;

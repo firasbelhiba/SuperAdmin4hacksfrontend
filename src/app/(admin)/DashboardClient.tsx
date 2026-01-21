@@ -4,10 +4,15 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useAlert } from "@/context/AlertProvider";
 import useAuthGuard from "@/hooks/useAuthGuard";
+import { createDynamicChart } from "@/hooks/useDynamicComponent";
 import { StatCard } from "@/components/ui/stat-card";
-import { LineChart, BarChart, DonutChart } from "@/components/chart";
 import Select from "@/components/ui/select/Select";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
+
+// Import dynamique des charts pour éviter de charger Chart.js sur toutes les pages
+const LineChart = createDynamicChart(() => import("@/components/chart/LineChart").then(mod => ({ default: mod.LineChart })));
+const BarChart = createDynamicChart(() => import("@/components/chart/BarChart").then(mod => ({ default: mod.BarChart })));
+const DonutChart = createDynamicChart(() => import("@/components/chart/DonutChart").then(mod => ({ default: mod.DonutChart })));
 import {
   getDashboardStats,
   getUserStats,
