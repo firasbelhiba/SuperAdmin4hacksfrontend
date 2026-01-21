@@ -2,11 +2,15 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import PlanForm, { PlanFormData } from "@/components/form/PlanForm";
+import { createDynamicForm } from "@/hooks/useDynamicComponent";
+import { PlanFormData } from "@/components/form/PlanForm";
 import { createPlan } from "@/services/plans";
 import { ArrowLeft } from "lucide-react";
 import Button from "@/components/ui/button/Button";
 import { useAlert } from "@/context/AlertProvider";
+
+// Import dynamique du formulaire lourd (244 lignes, react-hook-form, validation complexe)
+const PlanForm = createDynamicForm(() => import("@/components/form/PlanForm"));
 
 export default function NewPlanPage() {
   const router = useRouter();

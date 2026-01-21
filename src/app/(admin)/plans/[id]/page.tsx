@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Package, CheckCircle2, XCircle, Calendar, Zap, Edit, Trash2, DollarSign, Plus } from "lucide-react";
 import useAuthGuard from "@/hooks/useAuthGuard";
+import { createDynamicModal } from "@/hooks/useDynamicComponent";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import Button from "@/components/ui/button/Button";
 import { Card } from "@/components/ui/card/Card";
@@ -19,9 +20,11 @@ import {
   CreatePriceData
 } from "@/services/plans";
 import { useAlert } from "@/context/AlertProvider";
-import ConfirmModal from "@/components/ui/ConfirmModal";
 import { Modal } from "@/components/ui/modal";
 import PriceForm, { PriceFormData } from "@/components/form/PriceForm";
+
+// Import dynamique du modal pour éviter de charger Portal/animations avant l'interaction
+const ConfirmModal = createDynamicModal(() => import("@/components/ui/ConfirmModal"));
 
 interface PageProps {
   params: Promise<{ id: string }>;

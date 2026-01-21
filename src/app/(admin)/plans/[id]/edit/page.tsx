@@ -3,12 +3,16 @@
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import PlanForm, { PlanFormData } from "@/components/form/PlanForm";
+import { createDynamicForm } from "@/hooks/useDynamicComponent";
+import { PlanFormData } from "@/components/form/PlanForm";
 import { getPlanById, updatePlan, Plan } from "@/services/plans";
 import { ArrowLeft, XCircle } from "lucide-react";
 import Button from "@/components/ui/button/Button";
 import { useAlert } from "@/context/AlertProvider";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
+
+// Import dynamique du formulaire lourd (244 lignes, react-hook-form, validation complexe)
+const PlanForm = createDynamicForm(() => import("@/components/form/PlanForm"));
 
 export default function EditPlanPage() {
   const router = useRouter();

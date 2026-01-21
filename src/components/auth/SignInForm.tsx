@@ -2,7 +2,8 @@
 import Input from "@/components/form/input/InputField";
 import Label from "@/components/form/Label";
 import Button from "@/components/ui/button/Button";
-import { EyeCloseIcon, EyeIcon } from "@/icons";
+import EyeCloseIcon from "@/icons/eye-close.svg";
+import EyeIcon from "@/icons/eye.svg";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";

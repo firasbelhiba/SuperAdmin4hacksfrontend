@@ -16,6 +16,7 @@ import {
   Edit,
 } from "lucide-react";
 import useAuthGuard from "@/hooks/useAuthGuard";
+import { createDynamicModal } from "@/hooks/useDynamicComponent";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import Button from "@/components/ui/button/Button";
 import Card from "@/components/ui/card/Card";
@@ -25,7 +26,9 @@ import {
   cancelSubscription 
 } from "@/services/subscriptions";
 import { useAlert } from "@/context/AlertProvider";
-import ConfirmModal from "@/components/ui/ConfirmModal";
+
+// Import dynamique du modal pour éviter de charger Portal/animations avant l'interaction
+const ConfirmModal = createDynamicModal(() => import("@/components/ui/ConfirmModal"));
 
 interface PageProps {
   params: Promise<{ id: string }>;

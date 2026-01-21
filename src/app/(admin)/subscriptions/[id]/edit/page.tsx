@@ -3,12 +3,16 @@
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import SubscriptionForm, { SubscriptionFormData } from "@/components/form/SubscriptionForm";
+import { createDynamicForm } from "@/hooks/useDynamicComponent";
+import { SubscriptionFormData } from "@/components/form/SubscriptionForm";
 import { getSubscriptionById, updateSubscription, Subscription } from "@/services/subscriptions";
 import { ArrowLeft, XCircle } from "lucide-react";
 import Button from "@/components/ui/button/Button";
 import { useAlert } from "@/context/AlertProvider";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
+
+// Import dynamique du formulaire lourd (518 lignes, react-hook-form, API calls)
+const SubscriptionForm = createDynamicForm(() => import("@/components/form/SubscriptionForm"));
 
 export default function EditSubscriptionPage() {
   const router = useRouter();
