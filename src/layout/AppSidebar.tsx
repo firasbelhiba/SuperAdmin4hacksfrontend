@@ -7,7 +7,7 @@ import {
   ChevronDownIcon,
   HorizontaLDots,
 } from "../icons/index";
-import { Home, FileText, Clock, Users, Package, CreditCard } from "lucide-react";
+import { Home, FileText, Clock, Users, Package, CreditCard, Activity } from "lucide-react";
 
 type NavItem = {
   name: string;
@@ -21,6 +21,17 @@ const navItems: NavItem[] = [
     name: "Dashboard",
     icon: <Home size={20} strokeWidth={2} />,
     path: "/"
+  },
+  {
+    name: "Health Dashboard",
+    icon: <Activity size={20} strokeWidth={2} />,
+    path: "/health-dashboard",
+    subItems:[
+      { name: "Dashboard", path: "/health-dashboard" },
+      { name: "Hackathon Diagnostics", path: "/health-dashboard/diagnostics" },
+      { name: "Organizers At-Risk", path: "/health-dashboard/organizersAtRisk" }, 
+       { name: "Anomalous Activities", path: "/health-dashboard/anomalies" },   
+    ]
   },
   {
     name: "Hackathon Requests",

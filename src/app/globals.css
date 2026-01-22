@@ -719,3 +719,75 @@ span.flatpickr-weekday,
   @apply hover:translate-x-px hover:translate-y-px transition-all duration-150;
   @apply text-[#18191F] dark:text-white font-medium text-xs;
 }
+
+/* === Health Dashboard Styles === */
+
+/* Risk Level Badge */
+.risk-level-critical {
+  @apply px-3 py-1 rounded-lg border-2 text-sm font-semibold bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 border-red-500;
+}
+
+.risk-level-high {
+  @apply px-3 py-1 rounded-lg border-2 text-sm font-semibold bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300 border-orange-500;
+}
+
+.risk-level-medium {
+  @apply px-3 py-1 rounded-lg border-2 text-sm font-semibold bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 border-yellow-500;
+}
+
+.risk-level-low {
+  @apply px-3 py-1 rounded-lg border-2 text-sm font-semibold bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 border-green-500;
+}
+
+/* Severity Badge */
+.severity-critical {
+  @apply px-2 py-0.5 rounded text-xs font-medium bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300;
+}
+
+.severity-warning {
+  @apply px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300;
+}
+
+.severity-info {
+  @apply px-2 py-0.5 rounded text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300;
+}
+
+/* Health Progress Bar Container */
+.health-bar {
+  @apply w-full h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden;
+}
+
+/* Health Score Card with colored left border */
+.metric-card {
+  @apply rounded-xl border-2 border-[#18191F] dark:border-brand-700 bg-white dark:bg-gray-900;
+  @apply shadow-[4px_4px_0_0_#18191F] dark:shadow-[4px_4px_0_0_var(--color-brand-700)];
+  @apply hover:shadow-[2px_2px_0_0_#18191F] dark:hover:shadow-[2px_2px_0_0_var(--color-brand-700)];
+  @apply hover:translate-x-0.5 hover:translate-y-0.5 transition-all duration-150;
+  @apply p-4;
+}
+
+/* Status Badge Variants */
+.status-active {
+  @apply px-2 py-0.5 rounded text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300;
+}
+
+.status-archived {
+  @apply px-2 py-0.5 rounded text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300;
+}
+
+.status-cancelled {
+  @apply px-2 py-0.5 rounded text-xs font-medium bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300;
+}
+
+/* Type Badge Variants */
+.type-online {
+  @apply px-2 py-0.5 rounded text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300;
+}
+
+.type-in-person {
+  @apply px-2 py-0.5 rounded text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300;
+}
+
+.type-hybrid {
+  @apply px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300;
+}
