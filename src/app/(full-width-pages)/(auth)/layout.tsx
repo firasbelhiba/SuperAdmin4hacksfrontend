@@ -13,7 +13,7 @@ export default function AuthLayout({
       <ThemeProvider>
         <div className="flex gap-8 items-center max-w-7xl w-full">
           {/* Left Side - Hero */}
-          <div className="hidden lg:flex flex-1 bg-gradient-to-br from-[#4B4FDD] to-[#4B4FDD] dark:from-[#4B1566] dark:to-[#9713C9] rounded-[40px] p-16 min-h-[600px] items-end justify-start relative overflow-hidden">
+          <div className="hidden lg:flex flex-1 bg-gradient-to-br from-[#4B4FDD] to-[#4B4FDD] dark:from-[#4B1566] dark:to-[#9713C9] rounded-[40px] p-16 min-h-[600px] items-end justify-start relative overflow-hidden dark:shadow-[0_25px_70px_-15px_rgba(0,0,0,0.6)] ">
             {/* Lightning Bolt */}
             <div className="absolute -top-10 -right-20 w-[500px] h-[300px]">
               <Image
@@ -21,7 +21,7 @@ export default function AuthLayout({
                 alt="Lightning bolt"
                 width={500}
                 height={300}
-                className="w-full h-full drop-shadow-2xl  dark:hue-rotate-[280deg] dark:saturate-150"
+                className="w-full h-full drop-shadow-2xl dark:sepia dark:saturate-[600%] dark:hue-rotate-[5deg] dark:brightness-[1.05]"
               />
             </div>
 
