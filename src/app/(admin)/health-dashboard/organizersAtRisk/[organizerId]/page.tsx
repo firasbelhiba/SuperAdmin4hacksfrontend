@@ -46,7 +46,7 @@ export default function OrganizerAtRiskDetailPage() {
       <div className="space-y-4">
         <button
           onClick={() => router.back()}
-          className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+          className="neo-btn"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to list
@@ -72,12 +72,13 @@ export default function OrganizerAtRiskDetailPage() {
   const getRiskLevelIcon = (riskLevel: RiskLevel) => {
     switch (riskLevel) {
       case "CRITICAL":
+        return <AlertTriangle className="w-6 h-6 text-red-600 dark:text-red-400" />;
       case "HIGH":
-        return <AlertTriangle className="w-6 h-6" />;
+        return <AlertTriangle className="w-6 h-6 text-orange-600 dark:text-orange-400" />;
       case "MEDIUM":
-        return <AlertCircle className="w-6 h-6" />;
+        return <AlertCircle className="w-6 h-6 text-yellow-600 dark:text-yellow-400" />;
       case "LOW":
-        return <TrendingDown className="w-6 h-6" />;
+        return <TrendingDown className="w-6 h-6 text-blue-600 dark:text-blue-400" />;
     }
   };
 
@@ -86,7 +87,7 @@ export default function OrganizerAtRiskDetailPage() {
       {/* Back Button */}
       <button
         onClick={() => router.back()}
-        className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors font-medium"
+        className="neo-btn"
       >
         <ArrowLeft className="w-4 h-4" />
         Back to Organizers At Risk
@@ -208,7 +209,7 @@ export default function OrganizerAtRiskDetailPage() {
                     key={idx}
                     className="flex items-start gap-3 p-3 rounded-lg bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800"
                   >
-                    <AlertTriangle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+                    <AlertTriangle className="w-5 h-5 text-red-600 dark:text-red-400 shrink-0 mt-0.5" />
                     <span className="text-sm text-gray-700 dark:text-gray-300">
                       {concern}
                     </span>
@@ -244,7 +245,7 @@ export default function OrganizerAtRiskDetailPage() {
                     key={idx}
                     className="flex items-start gap-3 p-3 rounded-lg bg-yellow-50 dark:bg-yellow-900/10 border border-yellow-200 dark:border-yellow-800"
                   >
-                    <TrendingDown className="w-5 h-5 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5" />
+                    <TrendingDown className="w-5 h-5 text-yellow-600 dark:text-yellow-400 shrink-0 mt-0.5" />
                     <span className="text-sm text-gray-700 dark:text-gray-300">
                       {concern}
                     </span>
@@ -281,7 +282,7 @@ export default function OrganizerAtRiskDetailPage() {
                   key={idx}
                   className="flex items-start gap-3 p-3 rounded-lg bg-green-50 dark:bg-green-900/10 border border-green-200 dark:border-green-800 hover:bg-green-100 dark:hover:bg-green-900/20 transition-colors"
                 >
-                  <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                  <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 shrink-0 mt-0.5" />
                   <span className="text-sm text-gray-700 dark:text-gray-300 font-medium">
                     {action}
                   </span>

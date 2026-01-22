@@ -6,7 +6,7 @@ import { usePaginatedApi } from "@/hooks/usePaginatedApi";
 import { getAnomalies } from "@/services/health";
 import { Anomaly, AnomalySeverity, AnomalyType } from "@/services/health/healthType";
 import { useRouter } from "next/navigation";
-import { AlertTriangle, Activity, Calendar, TrendingUp, TrendingDown, ChevronRight, Zap } from "lucide-react";
+import { AlertTriangle, Activity, Calendar, TrendingUp, TrendingDown, ChevronRight, Zap, Info, XCircle } from "lucide-react";
 import ErrorDisplay from "@/components/common/ErrorDisplay";
 import { Pagination } from "@/components/common/Pagination";
 
@@ -45,16 +45,33 @@ export default function AnomaliesClient() {
     }
   };
 
-  const getAnomalyTypeIcon = (type: AnomalyType) => {
+  const getAnomalyTypeIcon = (type: AnomalyType, severity: AnomalySeverity) => {
+    const colorClass = severity === "CRITICAL" 
+      ? "text-red-600 dark:text-red-400" 
+      : severity === "WARNING" 
+      ? "text-yellow-600 dark:text-yellow-400" 
+      : "text-blue-600 dark:text-blue-400";
+    
     switch (type) {
       case "INACTIVE_PERIOD":
-        return <Activity className="w-5 h-5" />;
+        return <Activity className={`w-5 h-5 ${colorClass}`} />;
       case "SPIKE":
-        return <TrendingUp className="w-5 h-5" />;
+        return <TrendingUp className={`w-5 h-5 ${colorClass}`} />;
       case "DROP":
-        return <TrendingDown className="w-5 h-5" />;
+        return <TrendingDown className={`w-5 h-5 ${colorClass}`} />;
       case "UNUSUAL_PATTERN":
-        return <Zap className="w-5 h-5" />;
+        return <Zap className={`w-5 h-5 ${colorClass}`} />;
+    }
+  };
+
+  const getSeverityHeaderBg = (severity: AnomalySeverity) => {
+    switch (severity) {
+      case "CRITICAL":
+        return "bg-red-50 dark:bg-red-900/20 border-b-2 border-red-200 dark:border-red-800";
+      case "WARNING":
+        return "bg-yellow-50 dark:bg-yellow-900/20 border-b-2 border-yellow-200 dark:border-yellow-800";
+      case "INFO":
+        return "bg-blue-50 dark:bg-blue-900/20 border-b-2 border-blue-200 dark:border-blue-800";
     }
   };
 
@@ -115,17 +132,17 @@ export default function AnomaliesClient() {
                   onClick={() => handleCardClick(anomaly)}
                   className="rounded-xl border-2 border-[#18191F] dark:border-brand-700 bg-white dark:bg-gray-900 shadow-[4px_4px_0_0_#18191F] dark:shadow-[4px_4px_0_0_var(--color-brand-700)] hover:shadow-[2px_2px_0_0_#18191F] dark:hover:shadow-[2px_2px_0_0_var(--color-brand-700)] hover:translate-x-0.5 hover:translate-y-0.5 transition-all duration-150 overflow-hidden cursor-pointer group"
                 >
-                  {/* Header with Severity */}
-                  <div className={`p-4 ${anomaly.severity === "CRITICAL" ? "bg-red-50 dark:bg-red-900/20" : anomaly.severity === "WARNING" ? "bg-yellow-50 dark:bg-yellow-900/20" : "bg-blue-50 dark:bg-blue-900/20"}`}>
+                  {/* Header with Severity - Improved colors */}
+                  <div className={`p-4 ${getSeverityHeaderBg(anomaly.severity)}`}>
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex items-center gap-2">
-                        {getAnomalyTypeIcon(anomaly.anomalyType)}
-                        <span className={`px-2 py-1 rounded text-xs font-bold uppercase ${getSeverityBadgeStyle(anomaly.severity)}`}>
+                        {getAnomalyTypeIcon(anomaly.anomalyType, anomaly.severity)}
+                        <span className={`px-2.5 py-1 rounded-lg text-xs font-bold uppercase border-2 ${getSeverityBadgeStyle(anomaly.severity)}`}>
                           {anomaly.severity}
                         </span>
                       </div>
                       {anomaly.isResolved && (
-                        <span className="px-2 py-1 rounded text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
+                        <span className="px-2 py-1 rounded-lg text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 border-2 border-green-500">
                           RESOLVED
                         </span>
                       )}
@@ -156,7 +173,7 @@ export default function AnomaliesClient() {
 
                     {/* Description */}
                     <div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                      <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">
                         {anomaly.description}
                       </p>
                     </div>
