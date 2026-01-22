@@ -2,10 +2,12 @@
 import Input from "@/components/form/input/InputField";
 import Label from "@/components/form/Label";
 import Button from "@/components/ui/button/Button";
-import { EyeCloseIcon, EyeIcon } from "@/icons";
+import EyeCloseIcon from "@/icons/eye-close.svg";
+import EyeIcon from "@/icons/eye.svg";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub, FaEnvelope, FaLinkedinIn } from "react-icons/fa";
 import { FiLock } from "react-icons/fi";
@@ -34,12 +36,37 @@ export default function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { login } = useAuth();
   const [alert, setAlert] = useState<{
     variant: "success" | "error" | "warning" | "info";
     title: string;
     message: string;
   } | null>(null);
+
+  // Afficher les messages d'erreur depuis les query params
+  useEffect(() => {
+    const error = searchParams.get("error");
+    if (error === "unauthorized") {
+      setAlert({
+        variant: "error",
+        title: "Access Denied",
+        message: "You need ADMIN role to access this application.",
+      });
+    } else if (error === "banned") {
+      setAlert({
+        variant: "error",
+        title: "Account Banned",
+        message: "Your account has been banned. Please contact support.",
+      });
+    } else if (error === "session-expired") {
+      setAlert({
+        variant: "warning",
+        title: "Session Expired",
+        message: "Your session has expired. Please sign in again.",
+      });
+    }
+  }, [searchParams]);
 
   const {
     register,
@@ -64,12 +91,7 @@ export default function SignInForm() {
         password: data.password,
       });
 
-      setAlert({
-        variant: "success",
-        title: "Login Successful",
-        message: "Redirecting to your dashboard...",
-      });
-
+      // Redirection automatique sans alert
       router.push("/");
     } catch (error) {
       const message =

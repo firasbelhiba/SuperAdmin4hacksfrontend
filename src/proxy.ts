@@ -88,12 +88,27 @@ export async function proxy(request: NextRequest) {
   }
 
   // If no session and route is protected, redirect to signin
-  // Note: This is for UX only - actual auth is enforced by useAuthGuard and API routes
   if (!hasSession) {
     const signInUrl = new URL("/signin", request.url);
-    // Store the original URL to redirect back after login
     signInUrl.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(signInUrl);
+  }
+
+  // Security checks for authenticated users accessing protected routes
+  if (token) {
+    // Check if user is banned
+    if (token.isBanned === true) {
+      const signInUrl = new URL("/signin", request.url);
+      signInUrl.searchParams.set("error", "banned");
+      return NextResponse.redirect(signInUrl);
+    }
+
+    // Check if user has ADMIN role
+    if (token.role !== "ADMIN") {
+      const signInUrl = new URL("/signin", request.url);
+      signInUrl.searchParams.set("error", "unauthorized");
+      return NextResponse.redirect(signInUrl);
+    }
   }
 
   return NextResponse.next();
