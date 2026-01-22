@@ -6,7 +6,7 @@ import { usePaginatedApi } from "@/hooks/usePaginatedApi";
 import { getOrgAtRiskOrganizers } from "@/services/health";
 import { AtRiskOrganizer, RiskLevel } from "@/services/health/healthType";
 import { useRouter } from "next/navigation";
-import { AlertTriangle, Building, Calendar, TrendingDown, ChevronRight } from "lucide-react";
+import { AlertTriangle, Building, Calendar, TrendingDown, ChevronRight, AlertCircle, XCircle } from "lucide-react";
 import ErrorDisplay from "@/components/common/ErrorDisplay";
 import { Pagination } from "@/components/common/Pagination";
 
@@ -50,12 +50,26 @@ export default function HealthRiskClient() {
   const getRiskLevelIcon = (riskLevel: RiskLevel) => {
     switch (riskLevel) {
       case "CRITICAL":
+        return <XCircle className="w-5 h-5 text-red-600 dark:text-red-400" />;
       case "HIGH":
-        return <AlertTriangle className="w-5 h-5" />;
+        return <AlertTriangle className="w-5 h-5 text-orange-600 dark:text-orange-400" />;
       case "MEDIUM":
-        return <TrendingDown className="w-5 h-5" />;
+        return <AlertCircle className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />;
       case "LOW":
-        return <TrendingDown className="w-5 h-5" />;
+        return <TrendingDown className="w-5 h-5 text-blue-600 dark:text-blue-400" />;
+    }
+  };
+
+  const getRiskLevelHeaderBg = (riskLevel: RiskLevel) => {
+    switch (riskLevel) {
+      case "CRITICAL":
+        return "bg-red-50 dark:bg-red-900/20 border-b-2 border-red-200 dark:border-red-800";
+      case "HIGH":
+        return "bg-orange-50 dark:bg-orange-900/20 border-b-2 border-orange-200 dark:border-orange-800";
+      case "MEDIUM":
+        return "bg-yellow-50 dark:bg-yellow-900/20 border-b-2 border-yellow-200 dark:border-yellow-800";
+      case "LOW":
+        return "bg-blue-50 dark:bg-blue-900/20 border-b-2 border-blue-200 dark:border-blue-800";
     }
   };
 
@@ -86,18 +100,21 @@ export default function HealthRiskClient() {
                   onClick={() => handleCardClick(organizer)}
                   className="rounded-xl border-2 border-[#18191F] dark:border-brand-700 bg-white dark:bg-gray-900 shadow-[4px_4px_0_0_#18191F] dark:shadow-[4px_4px_0_0_var(--color-brand-700)] hover:shadow-[2px_2px_0_0_#18191F] dark:hover:shadow-[2px_2px_0_0_var(--color-brand-700)] hover:translate-x-0.5 hover:translate-y-0.5 transition-all duration-150 overflow-hidden cursor-pointer group"
                 >
-                  {/* Header with Risk Level */}
-                  <div className={`p-4 ${organizer.riskLevel === "CRITICAL" ? "bg-red-50 dark:bg-red-900/20" : organizer.riskLevel === "HIGH" ? "bg-orange-50 dark:bg-orange-900/20" : "bg-yellow-50 dark:bg-yellow-900/20"}`}>
+                  {/* Header with Risk Level - Improved colors */}
+                  <div className={`p-4 ${getRiskLevelHeaderBg(organizer.riskLevel)}`}>
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex items-center gap-2">
                         {getRiskLevelIcon(organizer.riskLevel)}
-                        <span className={`px-2 py-1 rounded text-xs font-bold uppercase ${getRiskLevelBadgeStyle(organizer.riskLevel)}`}>
+                        <span className={`px-2.5 py-1 rounded-lg text-xs font-bold uppercase border-2 ${getRiskLevelBadgeStyle(organizer.riskLevel)}`}>
                           {organizer.riskLevel} RISK
                         </span>
                       </div>
-                      <span className="text-2xl font-bold text-gray-900 dark:text-white">
-                        {organizer.riskScore}
-                      </span>
+                      <div className="text-right">
+                        <span className="text-2xl font-bold text-gray-900 dark:text-white">
+                          {organizer.riskScore}
+                        </span>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">score</p>
+                      </div>
                     </div>
                   </div>
 
@@ -105,7 +122,7 @@ export default function HealthRiskClient() {
                   <div className="p-4 space-y-3">
                     {/* Organizer Name */}
                     <div className="flex items-start gap-2">
-                      <Building className="w-4 h-4 text-gray-400 mt-1 flex-shrink-0" />
+                      <Building className="w-4 h-4 text-gray-400 mt-1 shrink-0" />
                       <div className="flex-1 min-w-0">
                         <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">
                           Organizer
@@ -135,7 +152,7 @@ export default function HealthRiskClient() {
                         <ul className="space-y-1">
                           {organizer.primaryConcerns.slice(0, 2).map((concern, idx) => (
                             <li key={idx} className="flex items-start gap-2 text-xs text-gray-600 dark:text-gray-400">
-                              <span className="text-red-500 dark:text-red-400 mt-0.5">•</span>
+                              <span className="text-red-600 dark:text-red-400 mt-0.5 font-bold">•</span>
                               <span className="flex-1">{concern}</span>
                             </li>
                           ))}

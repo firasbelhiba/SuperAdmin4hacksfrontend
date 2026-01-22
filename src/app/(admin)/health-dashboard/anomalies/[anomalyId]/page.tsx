@@ -47,7 +47,7 @@ export default function AnomalyDetailPage() {
       <div className="space-y-4">
         <button
           onClick={() => router.back()}
-          className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+          className="neo-btn"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to list
@@ -68,16 +68,22 @@ export default function AnomalyDetailPage() {
     }
   };
 
-  const getAnomalyTypeIcon = (type: AnomalyType) => {
+  const getAnomalyTypeIcon = (type: AnomalyType, severity: AnomalySeverity) => {
+    const colorClass = severity === "CRITICAL" 
+      ? "text-red-600 dark:text-red-400" 
+      : severity === "WARNING" 
+      ? "text-yellow-600 dark:text-yellow-400" 
+      : "text-blue-600 dark:text-blue-400";
+    
     switch (type) {
       case "INACTIVE_PERIOD":
-        return <Activity className="w-6 h-6" />;
+        return <Activity className={`w-6 h-6 ${colorClass}`} />;
       case "SPIKE":
-        return <TrendingUp className="w-6 h-6" />;
+        return <TrendingUp className={`w-6 h-6 ${colorClass}`} />;
       case "DROP":
-        return <TrendingDown className="w-6 h-6" />;
+        return <TrendingDown className={`w-6 h-6 ${colorClass}`} />;
       case "UNUSUAL_PATTERN":
-        return <Zap className="w-6 h-6" />;
+        return <Zap className={`w-6 h-6 ${colorClass}`} />;
     }
   };
 
@@ -99,7 +105,7 @@ export default function AnomalyDetailPage() {
       {/* Back Button */}
       <button
         onClick={() => router.back()}
-        className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors font-medium"
+        className="neo-btn"
       >
         <ArrowLeft className="w-4 h-4" />
         Back to Anomalies
@@ -111,7 +117,7 @@ export default function AnomalyDetailPage() {
         <div className={`p-6 ${anomaly.severity === "CRITICAL" ? "bg-red-50 dark:bg-red-900/20" : anomaly.severity === "WARNING" ? "bg-yellow-50 dark:bg-yellow-900/20" : "bg-blue-50 dark:bg-blue-900/20"}`}>
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              {getAnomalyTypeIcon(anomaly.anomalyType)}
+              {getAnomalyTypeIcon(anomaly.anomalyType, anomaly.severity)}
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-bold uppercase border-2 ${getSeverityBadgeStyle(anomaly.severity)}`}>
@@ -262,7 +268,7 @@ export default function AnomalyDetailPage() {
                     key={idx}
                     className="flex items-start gap-3 p-3 rounded-lg bg-orange-50 dark:bg-orange-900/10 border border-orange-200 dark:border-orange-800"
                   >
-                    <AlertTriangle className="w-5 h-5 text-orange-600 dark:text-orange-400 flex-shrink-0 mt-0.5" />
+                    <AlertTriangle className="w-5 h-5 text-orange-600 dark:text-orange-400 shrink-0 mt-0.5" />
                     <span className="text-sm text-gray-700 dark:text-gray-300">
                       {cause}
                     </span>
@@ -298,7 +304,7 @@ export default function AnomalyDetailPage() {
                     key={idx}
                     className="flex items-start gap-3 p-3 rounded-lg bg-green-50 dark:bg-green-900/10 border border-green-200 dark:border-green-800 hover:bg-green-100 dark:hover:bg-green-900/20 transition-colors"
                   >
-                    <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 shrink-0 mt-0.5" />
                     <span className="text-sm text-gray-700 dark:text-gray-300 font-medium">
                       {action}
                     </span>
