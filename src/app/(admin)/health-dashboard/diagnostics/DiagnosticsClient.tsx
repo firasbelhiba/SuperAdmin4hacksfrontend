@@ -59,6 +59,8 @@ export default function DiagnosticsClient() {
         return "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300";
       case "CANCELLED":
         return "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300";
+      case "DRAFT":
+        return "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300";
     }
   };
 
@@ -119,6 +121,7 @@ export default function DiagnosticsClient() {
                 { value: "ACTIVE", label: "Active" },
                 { value: "ARCHIVED", label: "Archived" },
                 { value: "CANCELLED", label: "Cancelled" },
+                { value: "DRAFT", label: "Draft" },
               ]}
             />
           </div>
