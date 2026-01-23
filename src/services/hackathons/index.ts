@@ -12,7 +12,7 @@ import { PaginatedResponse } from "@/hooks/usePaginatedApi";
 // TYPES & INTERFACES
 // ============================================================================
 
-export type HackathonStatus = "ACTIVE" | "ARCHIVED" | "CANCELLED";
+export type HackathonStatus = "ACTIVE" | "ARCHIVED" | "CANCELLED" | "DRAFT";
 export type HackathonType = "IN_PERSON" | "ONLINE" | "HYBRID";
 
 export interface HackathonCategory {
@@ -95,4 +95,14 @@ export async function getHackathons(
   );
 
   return response.data;
+}
+
+/**
+ * Annule un hackathon
+ */
+export async function cancelHackathon(
+  identifier: string,
+  reason: string
+): Promise<void> {
+  await api.post(`/admin/hackathon/${identifier}/cancel`, { reason });
 }

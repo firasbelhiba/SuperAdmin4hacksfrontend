@@ -8,6 +8,7 @@ import {
   HorizontaLDots,
 } from "../icons/index";
 import { Home, FileText, Clock, Users, Package, CreditCard, Activity } from "lucide-react";
+import Image from "next/image";
 
 type NavItem = {
   name: string;
@@ -264,20 +265,26 @@ const AppSidebar: React.FC = () => {
       >
         <Link href="/" className="flex items-center gap-3 group">
           {isExpanded || isHovered || isMobileOpen ? (
-            <div className="relative">
-              <img
+            <div className="relative dark:text-[#FEC601]">
+              <Image
                 src="/images/logo/logo-4hacks.svg"
-                alt="4Hacks Logo"
+                alt="4Hacks Icon"
+                width={40}
+                height={40}
+                priority
                 className="block h-10 w-auto"
-              />
+             />
             </div>
           ) : (
-            <div className="relative">
-              <img
-                src="/images/logo/logo-4hacks-min.svg"
+            <div className="relative dark:text-[#FEC601]">
+             <Image
+                src="/images/logo/logo-4hacks.svg"
                 alt="4Hacks Icon"
+                width={40}
+                height={40}
+                priority
                 className="block h-10 w-auto"
-              />
+             />
             </div>
           )}
         </Link>

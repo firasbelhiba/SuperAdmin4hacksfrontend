@@ -1,18 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArrowLeft, Activity, AlertTriangle, CheckCircle, Users, FileText, Gavel, TrendingUp, TrendingDown, Target, Send, UserCheck } from "lucide-react";
+import { ArrowLeft, Activity, AlertTriangle, CheckCircle, Users, FileText, Gavel, TrendingUp, TrendingDown, Target, Send, UserCheck, Ban } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { getHackathonDiagnostic } from "@/services/health";
+import { cancelHackathon } from "@/services/hackathons";
 import {  HackathonDiagnostic, RiskLevel, SignalSeverity } from "@/services/health/healthType";
 import useAuthGuard from "@/hooks/useAuthGuard";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import ErrorDisplay from "@/components/common/ErrorDisplay";
 import {StatCard} from "@/components/ui/stat-card/StatCard";
 import { createDynamicChart } from "@/hooks/useDynamicComponent";
+import { createDynamicModal } from "@/hooks/useDynamicComponent";
+import Button from "@/components/ui/button/Button";
+import { useAlert } from "@/context/AlertProvider";
 
 const BarChart = createDynamicChart(() => import("@/components/chart/BarChart").then(mod => ({ default: mod.BarChart })));
 const PolarChart = createDynamicChart(() => import("@/components/chart/PolarChart").then(mod => ({ default: mod.PolarChart })));
+// Import dynamique du modal pour éviter de charger Portal/animations avant l'interaction
+const ConfirmModal = createDynamicModal(() => import("@/components/ui/ConfirmModal"));
 
 interface DiagnosticDetailClientProps {
   hackathonId: string;
@@ -21,15 +27,22 @@ interface DiagnosticDetailClientProps {
 export default function DiagnosticDetailClient({ hackathonId }: DiagnosticDetailClientProps) {
   const { isLoading: authLoading } = useAuthGuard();
   const router = useRouter();
+    const { showAlert } = useAlert();
   const [data, setData] = useState<HackathonDiagnostic | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const [showCancelModal, setShowCancelModal] = useState<boolean>(false);
+  const [cancelReason, setCancelReason] = useState<string>("");
+  const [actionLoading, setActionLoading] = useState<boolean>(false);
+
   useEffect(() => {
+    
     const fetchData = async () => {
       try {
         setLoading(true);
         const result = await getHackathonDiagnostic(hackathonId);
+        console.log(result)
         setData(result);
       } catch (err: any) {
         setError(err.message || "Failed to load diagnostic data");
@@ -40,6 +53,34 @@ export default function DiagnosticDetailClient({ hackathonId }: DiagnosticDetail
 
     fetchData();
   }, [hackathonId]);
+
+   const handelConfirmCancel = async () => {
+
+    // Implement the cancel confirmation logic here
+     if (!data) return;
+    
+        try {
+          setActionLoading(true);
+          await cancelHackathon(data.hackathonId, cancelReason);
+          
+          // Mettre à jour manuellement l'utilisateur (l'API ne retourne pas l'objet complet)
+          setData({
+            ...data,
+            status: "CANCELLED",
+          });
+          
+          setShowCancelModal(false);
+          setCancelReason("");
+          showAlert("success", "Success", "Hackathon cancelled successfully");
+        } catch (err: any) {
+          showAlert("error", "Error", err.response?.data?.message || "Failed to cancel hackathon");
+        } finally {
+          setActionLoading(false);
+        }
+  };
+
+
+
 
   if (authLoading || loading) {
     return <LoadingSpinner text="Loading diagnostic data..." />;
@@ -124,6 +165,23 @@ export default function DiagnosticDetailClient({ hackathonId }: DiagnosticDetail
             ID: {data.hackathonId}
           </p>
         </div>
+
+
+         {/* Actions */}
+        <div className="flex gap-3">
+          {(data.status ==="DRAFT" || data.status === "ACTIVE") && (
+         <Button
+              variant="outline"
+              onClick={() => setShowCancelModal(true)}
+              className="flex items-center gap-2 bg-[#FFE8E8]! border-[#FF4B1E]! text-[#FF4B1E]! hover:bg-[#FF4B1E]! hover:text-white!"
+            >
+              <Ban className="h-4 w-4" />
+              Cancel Hackathon
+            </Button>
+          ) 
+          }
+        </div>
+
       </div>
 
       {/* 1. Overview: Title, Status, Risk Level, Health Score */}
@@ -350,6 +408,37 @@ export default function DiagnosticDetailClient({ hackathonId }: DiagnosticDetail
           />
         </div>
       </div>
+
+         {/* Ban Modal */}
+      <ConfirmModal
+        open={showCancelModal}
+        onCancel={() => {
+          setShowCancelModal(false);
+          setCancelReason("");
+        }}
+        onConfirm={handelConfirmCancel}
+        title="Cancel Hackathon"
+        message={`Are you sure you want to Cancel ${data.hackathonTitle}?`}
+        confirmLabel="Cancel Hackathon"
+        loading={actionLoading}
+      >
+        <div>
+          <label className="block text-sm font-bold text-[#18191F] dark:text-white mb-2">
+            Reason <span className="text-[#FF4B1E] dark:text-error-400">*</span>
+          </label>
+          <textarea
+            value={cancelReason}
+            onChange={(e) => setCancelReason(e.target.value)}
+            placeholder="Violation of community guidelines, spam, harassment, etc."
+            className="w-full px-4 py-3 rounded-lg border-2 border-[#18191F] dark:border-brand-700 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#FFBD12] min-h-[120px] resize-none"
+            required
+            autoFocus
+          />
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+            This reason will be visible to the user and stored in their profile.
+          </p>
+        </div>
+      </ConfirmModal>
     </div>
   );
 }
