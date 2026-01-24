@@ -98,7 +98,7 @@ export default function ChangePasswordForm() {
         <div className="text-center mb-6">
           <div className="flex items-center justify-center mb-8">
             <Image
-              src="/images/logo/Logo-4hacks.svg"
+              src="/images/logo/logo-4hacks-new.svg"
               alt="4Hacks Logo"
               width={100}
               height={100}

@@ -114,7 +114,7 @@ export default function SignInForm() {
       {/* Logo */}
       <div className="flex items-center justify-center ">
         <Image
-          src="/images/logo/Logo-4hacks.svg"
+          src="/images/logo/logo-4hacks-new.svg"
           alt="4Hacks Logo"
           width={100}
           height={100}
