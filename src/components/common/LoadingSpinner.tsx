@@ -32,7 +32,7 @@ export default function LoadingSpinner({
           {/* Logo avec animation de pulsation */}
           <div className={`${sizeClasses[size]} animate-pulse-slow`}>
             <Image
-              src="/images/logo/Logo-4hacks.svg"
+              src="/images/logo/logo-4hacks-new.svg"
               alt="4Hacks Logo"
               width={size === "sm" ? 48 : size === "md" ? 80 : 112}
               height={size === "sm" ? 48 : size === "md" ? 80 : 112}
